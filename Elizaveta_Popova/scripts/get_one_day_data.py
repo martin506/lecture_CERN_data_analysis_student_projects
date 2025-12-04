@@ -2,6 +2,7 @@ import requests
 import csv
 import json
 import os
+import sys
 from datetime import datetime
 
 def check_existing_file(filename):
@@ -156,8 +157,22 @@ def print_summary(data):
 def main():
     # Configuration
     API_KEY = "6ZpPKIgsSZP6dapx1Olb5Gf1OFL0pGLfDUQV2NVp"  
-    START_DATE = "2025-11-22"  # YYYY-MM-DD format
-    END_DATE = "2025-11-22"    # YYYY-MM-DD format
+    
+    if len(sys.argv) < 2:
+        print("Usage: python script.py <start_date>")
+        print("Example: python script.py 2025-11-22")
+        sys.exit(1)
+    
+    START_DATE = sys.argv[1]
+    END_DATE = START_DATE
+
+    try:
+        datetime.strptime(START_DATE, '%Y-%m-%d')
+        datetime.strptime(END_DATE, '%Y-%m-%d')
+    except ValueError:
+        print("Error: Dates must be in YYYY-MM-DD format")
+        sys.exit(1)
+
     OUTPUT_FILENAME = os.path.join("data", f"neo_data_{START_DATE}.csv")
     
     # Check if file exists FIRST, before fetching any data
