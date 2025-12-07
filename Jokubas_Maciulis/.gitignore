@@ -9,3 +9,6 @@
 
 # CSV files
 *.csv
+
+# png files
+*.png
